@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Administrateur</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+        }
+        .table td, .table th {
+            vertical-align: middle;
+        }
+        .status-badge {
+            padding: 5px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status-pending {
+            background-color: #ffeeba;
+            color: #856404;
+        }
+        .status-validated {
+            background-color: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Dashboard Administrateur</h1>
+            <div>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Accueil</a>
+                <a href="{{ url_for('admin_logout') }}" class="btn btn-danger ml-2">Déconnexion</a>
+            </div>
+        </div>
+        
+        {% if etablissements %}
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Lieu</th>
+                        <th>Pays</th>
+                        <th>Contacts</th>
+                        <th>Lien d'inscription</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for etablissement in etablissements %}
+                        <tr>
+                            <td>{{ etablissement.id }}</td>
+                            <td>{{ etablissement.nom }}</td>
+                            <td>{{ etablissement.lieu }}</td>
+                            <td>{{ etablissement.pays }}</td>
+                            <td>{{ etablissement.contacts }}</td>
+                            <td>
+                                <a href="{{ etablissement.lien_inscription }}" target="_blank">Voir le lien</a>
+                            </td>
+                            <td>
+                                {% if etablissement.valide %}
+                                    <span class="status-badge status-validated">Validé</span>
+                                {% else %}
+                                    <span class="status-badge status-pending">En attente</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not etablissement.valide %}
+                                    <a href="{{ url_for('valider_etablissement', id=etablissement.id) }}" class="btn btn-success btn-sm">Valider</a>
+                                {% else %}
+                                    <button class="btn btn-success btn-sm" disabled>Validé</button>
+                                {% endif %}
+                                <a href="{{ url_for('supprimer_etablissement', id=etablissement.id) }}" class="btn btn-danger btn-sm ml-1" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet établissement?')">Supprimer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">
+                Aucun établissement n'a été ajouté pour le moment.
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html> 

@@ -1,0 +1,18 @@
+{
+    "etablissements": [
+        {
+            "id": 1,
+            "nom": "universit\u00e9 centrale polytechnique",
+            "lien_inscription": "http://universitecentrale.tn",
+            "contacts": "123124",
+            "lieu": "tunis",
+            "pays": "Tunisia",
+            "valide": true,
+            "lien_bot": "http://chat.openai.com"
+        }
+    ],
+    "admin": {
+        "username": "admin",
+        "password": "admin123"
+    }
+}
