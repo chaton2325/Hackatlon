@@ -1,39 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Établissements</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .container {
-            max-width: 800px;
-            margin: 0 auto;
+            background: #ffffff;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             text-align: center;
-            padding-top: 50px;
+            animation: fadeIn 1s ease-in-out;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        p.lead {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #666;
         }
         .btn-container {
-            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
         .btn-container .btn {
-            margin: 10px;
             padding: 15px 30px;
-            font-size: 18px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #6c63ff;
+            border: none;
+        }
+        .btn-success {
+            background-color: #00c9a7;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #5548c8;
+            transform: translateY(-3px);
+        }
+        .btn-success:hover {
+            background-color: #009e88;
+            transform: translateY(-3px);
         }
         .admin-link {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 20px;
+            right: 20px;
+        }
+        .admin-link .btn {
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        .alert {
+            margin-bottom: 30px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="admin-link">
-            <a href="{{ url_for('admin_login') }}" class="btn btn-sm btn-outline-secondary">Admin</a>
+            <a href="{{ url_for('admin_login') }}" class="btn btn-outline-secondary">Admin</a>
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -44,12 +98,12 @@
             {% endif %}
         {% endwith %}
 
-        <h1 class="mb-4">Gestion des Établissements</h1>
+        <h1>Gestion des Établissements</h1>
         <p class="lead">Bienvenue sur notre plateforme de gestion des établissements</p>
-        
+
         <div class="btn-container">
             <a href="{{ url_for('ajouter_etablissement') }}" class="btn btn-primary">Ajouter un établissement</a>
-            <a href="{{ url_for('liste_etablissements') }}" class="btn btn-success">Consulter la liste des établissements</a>
+            <a href="{{ url_for('liste_etablissements') }}" class="btn btn-success">Voir la liste</a>
         </div>
     </div>
 
@@ -57,4 +111,4 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-</html> 
+</html>
