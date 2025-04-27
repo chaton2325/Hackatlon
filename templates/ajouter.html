@@ -1,69 +1,382 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ajouter un Établissement</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #6c63ff;
+            --accent-color: #5548c8;
+            --gradient-start: #8e2de2;
+            --gradient-end: #4a00e0;
+            --text-color: #333;
+            --light-color: #f8f9fd;
+            --shadow-color: rgba(108, 99, 255, 0.2);
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            min-height: 100vh;
             margin: 0;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        
         .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
             max-width: 800px;
-            margin: 0 auto;
-            padding-top: 30px;
+            margin: 40px auto;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        
+        h1 {
+            color: var(--text-color);
+            font-weight: 700;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            font-size: 2.5rem;
+            text-align: center;
+            width: 100%;
+        }
+        
+        h1:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            transform: translateX(-50%);
+            border-radius: 4px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid #e1e5ee;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+            border-color: var(--primary-color);
+        }
+        
+        label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        .form-text {
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-top: 5px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(.18,.89,.32,1.28);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(.18,.89,.32,1.28);
+            z-index: -1;
+        }
+        
+        .btn:hover:before {
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(78, 115, 223, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            border: none;
+        }
+        
+        .btn-secondary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.4);
+        }
+        
+        .alert {
+            border-radius: 10px;
+            animation: slideDown 0.5s ease-in-out;
+            margin-bottom: 25px;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        
+        .form-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .form-section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-section-title i {
+            margin-right: 10px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--light-color);
+            border-radius: 50%;
+            color: var(--primary-color);
+        }
+        
+        .btn-floating {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            z-index: 1000;
+            background: linear-gradient(45deg, #6c757d, #495057);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-floating:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .form-section {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .btn-floating {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+        
+        .logo-container {
+            margin-bottom: 30px;
+            animation: fadeIn 1.3s ease-in-out;
+        }
+        
+        .logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.1));
+        }
+        
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            margin-top: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
+    <div class="shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+    
     <div class="container">
+        <div class="logo-container text-center mb-4">
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="PAIET Logo" class="logo">
+            <h2 class="logo-text">Plateforme d'Accompagnement des Étudiants Internationaux en Tunisie</h2>
+        </div>
+        
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                    <div class="alert alert-{{ category }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert">
+                            <span>&times;</span>
+                        </button>
+                    </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
 
-        <h1 class="mb-4 text-center">Ajouter un Établissement</h1>
+        <h1>Ajouter un Établissement</h1>
         
         <form method="POST" action="{{ url_for('ajouter_etablissement') }}">
-            <div class="form-group">
-                <label for="nom">Nom de l'établissement</label>
-                <input type="text" class="form-control" id="nom" name="nom" required>
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-university"></i>
+                    Informations générales
+                </div>
+                <div class="form-group">
+                    <label for="nom">Nom de l'établissement</label>
+                    <input type="text" class="form-control" id="nom" name="nom" required placeholder="Entrez le nom complet de l'établissement">
+                </div>
+                
+                <div class="form-group">
+                    <label for="lien_inscription">Lien d'inscription</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-link"></i></span>
+                        </div>
+                        <input type="url" class="form-control" id="lien_inscription" name="lien_inscription" required placeholder="https://exemple.com/inscription">
+                    </div>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="lien_inscription">Lien d'inscription</label>
-                <input type="url" class="form-control" id="lien_inscription" name="lien_inscription" required>
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Localisation
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lieu">Lieu</label>
+                            <input type="text" class="form-control" id="lieu" name="lieu" required placeholder="Ville, région">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="pays">Pays</label>
+                            <input type="text" class="form-control" id="pays" name="pays" required placeholder="Pays">
+                        </div>
+                    </div>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="contacts">Contacts</label>
-                <textarea class="form-control" id="contacts" name="contacts" rows="3" required></textarea>
-                <small class="form-text text-muted">Téléphone, email, etc.</small>
+            <div class="form-section">
+                <div class="form-section-title">
+                    <i class="fas fa-phone-alt"></i>
+                    Coordonnées
+                </div>
+                <div class="form-group">
+                    <label for="contacts">Contacts</label>
+                    <textarea class="form-control" id="contacts" name="contacts" rows="3" required placeholder="Téléphone, email, etc."></textarea>
+                    <small class="form-text text-muted">Indiquez tous les moyens de contact disponibles pour cet établissement.</small>
+                </div>
             </div>
             
-            <div class="form-group">
-                <label for="lieu">Lieu</label>
-                <input type="text" class="form-control" id="lieu" name="lieu" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="pays">Pays</label>
-                <input type="text" class="form-control" id="pays" name="pays" required>
-            </div>
-            
-            <div class="text-center mt-4">
-                <button type="submit" class="btn btn-primary mr-2">Soumettre</button>
-                <a href="{{ url_for('index') }}" class="btn btn-secondary">Retour</a>
+            <div class="text-center mt-5">
+                <button type="submit" class="btn btn-primary mr-3">
+                    <i class="fas fa-paper-plane mr-2"></i>Soumettre
+                </button>
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left mr-2"></i>Retour
+                </a>
             </div>
         </form>
     </div>
+    
+    <a href="{{ url_for('index') }}" class="btn-floating">
+        <i class="fas fa-home"></i>
+    </a>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Animation pour les sections du formulaire
+        $(document).ready(function() {
+            $('.form-section').each(function(i) {
+                $(this).css('opacity', '0');
+                $(this).css('transform', 'translateY(20px)');
+                
+                setTimeout(function() {
+                    $('.form-section').eq(i).css('transition', 'all 0.5s ease');
+                    $('.form-section').eq(i).css('opacity', '1');
+                    $('.form-section').eq(i).css('transform', 'translateY(0)');
+                }, 300 + (i * 150));
+            });
+        });
+    </script>
 </body>
 </html> 

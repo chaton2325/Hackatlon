@@ -146,6 +146,139 @@
             flex-wrap: wrap;
         }
         
+        .search-section {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .search-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .search-box {
+            flex: 1;
+            position: relative;
+            min-width: 250px;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            border-radius: 50px;
+            border: 1px solid #e1e5ee;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f8f9fc;
+        }
+        
+        .search-box input:focus {
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.2);
+            border-color: var(--primary-color);
+            background-color: white;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+        
+        .filter-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0;
+            white-space: nowrap;
+        }
+        
+        .filter-select {
+            padding: 10px 15px;
+            border-radius: 50px;
+            border: 1px solid #e1e5ee;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f8f9fc;
+            min-width: 180px;
+            color: var(--text-color);
+        }
+        
+        .filter-select:focus {
+            box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.2);
+            border-color: var(--primary-color);
+            background-color: white;
+        }
+        
+        .filter-select option {
+            padding: 10px;
+        }
+        
+        .reset-filters {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 15px;
+            border-radius: 50px;
+        }
+        
+        .reset-filters:hover {
+            background-color: rgba(78, 115, 223, 0.1);
+        }
+        
+        .reset-filters i {
+            margin-right: 5px;
+        }
+        
+        .no-results {
+            padding: 40px;
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 20px;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: #d1d3e2;
+            margin-bottom: 15px;
+        }
+        
+        .no-results h3 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .no-results p {
+            color: #858796;
+        }
+        
         @media (max-width: 768px) {
             .header-section {
                 flex-direction: column;
@@ -158,6 +291,16 @@
             
             .container {
                 padding-top: 20px;
+            }
+            
+            .search-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-container {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
         
@@ -179,10 +322,66 @@
             color: #b7b9cc;
             font-weight: 600;
         }
+        
+        .filter-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px 5px 15px;
+            background: rgba(78, 115, 223, 0.1);
+            color: var(--primary-color);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            animation: fadeIn 0.3s;
+        }
+        
+        .filter-badge .close {
+            font-size: 1rem;
+            margin-left: 8px;
+            opacity: 0.7;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .filter-badge .close:hover {
+            opacity: 1;
+        }
+        
+        .active-filters {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            margin-bottom: 20px;
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .logo {
+            max-width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="logo-container text-center mb-4">
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="PAIET Logo" class="logo">
+            <h2 class="logo-text">Plateforme d'Accompagnement des Étudiants Internationaux en Tunisie</h2>
+        </div>
+        
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -206,10 +405,30 @@
             </a>
         </div>
         
+        <div class="search-section">
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Rechercher un établissement..." />
+                </div>
+                <div class="filter-container">
+                    <label class="filter-label">Filtrer par pays:</label>
+                    <select id="countryFilter" class="filter-select">
+                        <option value="">Tous les pays</option>
+                        <!-- Les options de pays seront générées par JavaScript -->
+                    </select>
+                </div>
+                <button id="resetFilters" class="reset-filters">
+                    <i class="fas fa-undo"></i> Réinitialiser
+                </button>
+            </div>
+            <div class="active-filters" id="activeFilters"></div>
+        </div>
+        
         {% if etablissements %}
-            <div class="row">
+            <div class="row" id="etablissementsList">
                 {% for etablissement in etablissements %}
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 etablissement-item" data-nom="{{ etablissement.nom }}" data-pays="{{ etablissement.pays }}" data-lieu="{{ etablissement.lieu }}">
                         <div class="card h-100">
                             <div class="card-header d-flex justify-content-between align-items-center">
                                 <span>{{ etablissement.nom }}</span>
@@ -225,9 +444,15 @@
                                     <strong>Contacts :</strong> {{ etablissement.contacts }}
                                 </p>
                                 <div class="d-flex flex-wrap">
+                                    <a href="{{ etablissement.lien_inscription }}" class="btn btn-primary mb-2 mr-2" target="_blank">
+                                        <i class="fas fa-external-link-alt mr-2"></i>Site web 
+                                    </a>
+                                    <a href="{{ url_for('etablissement_bot', id=etablissement.id) }}" class="btn btn-info mb-2">
+                                        <i class="fas fa-robot mr-2"></i>Discuter avec le bot
+                                    </a>
                                     {% if etablissement.lien_bot %}
-                                        <a href="{{ etablissement.lien_bot }}" class="btn btn-info mb-2" target="_blank">
-                                            <i class="fas fa-robot mr-2"></i>Accéder au bot
+                                        <a href="{{ etablissement.lien_bot }}" class="btn btn-outline-secondary mb-2 ml-2" target="_blank">
+                                            <i class="fas fa-link mr-2"></i>Lien externe
                                         </a>
                                     {% endif %}
                                 </div>
@@ -235,6 +460,11 @@
                         </div>
                     </div>
                 {% endfor %}
+            </div>
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>Aucun résultat trouvé</h3>
+                <p>Aucun établissement ne correspond à votre recherche. Essayez avec d'autres critères.</p>
             </div>
         {% else %}
             <div class="empty-state">
@@ -249,15 +479,107 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        // Animation pour les cartes au chargement
+        // Attendre que le DOM soit chargé
         $(document).ready(function() {
+            // Récupérer tous les pays disponibles et les ajouter au filtre
+            populateCountryFilter();
+            
+            // Animation pour les cartes au chargement
             $('.card').each(function(i) {
                 $(this).delay(i * 150).animate({
                     opacity: 1,
                     top: 0
                 }, 400);
             });
+            
+            // Événement de recherche
+            $('#searchInput').on('input', function() {
+                filterEtablissements();
+            });
+            
+            // Événement de changement du filtre de pays
+            $('#countryFilter').on('change', function() {
+                updateActiveFilters();
+                filterEtablissements();
+            });
+            
+            // Réinitialiser les filtres
+            $('#resetFilters').on('click', function() {
+                $('#searchInput').val('');
+                $('#countryFilter').val('');
+                $('#activeFilters').empty();
+                filterEtablissements();
+            });
         });
+        
+        // Fonction pour peupler le filtre de pays
+        function populateCountryFilter() {
+            const countries = new Set();
+            $('.etablissement-item').each(function() {
+                const country = $(this).data('pays');
+                if (country) {
+                    countries.add(country);
+                }
+            });
+            
+            // Trier les pays par ordre alphabétique
+            const sortedCountries = Array.from(countries).sort();
+            
+            // Ajouter les options au select
+            const countryFilter = $('#countryFilter');
+            sortedCountries.forEach(country => {
+                countryFilter.append(`<option value="${country}">${country}</option>`);
+            });
+        }
+        
+        // Fonction pour filtrer les établissements
+        function filterEtablissements() {
+            const searchTerm = $('#searchInput').val().toLowerCase();
+            const selectedCountry = $('#countryFilter').val();
+            let visibleCount = 0;
+            
+            $('.etablissement-item').each(function() {
+                const nom = $(this).data('nom').toLowerCase();
+                const pays = $(this).data('pays');
+                const lieu = $(this).data('lieu').toLowerCase();
+                
+                // Vérifier si l'établissement correspond aux critères de recherche
+                const matchesSearch = nom.includes(searchTerm) || lieu.includes(searchTerm);
+                const matchesCountry = !selectedCountry || pays === selectedCountry;
+                
+                // Afficher ou masquer l'établissement
+                if (matchesSearch && matchesCountry) {
+                    $(this).show();
+                    visibleCount++;
+                } else {
+                    $(this).hide();
+                }
+            });
+            
+            // Afficher un message si aucun résultat n'est trouvé
+            if (visibleCount === 0) {
+                $('#noResults').show();
+            } else {
+                $('#noResults').hide();
+            }
+        }
+        
+        // Mettre à jour les filtres actifs
+        function updateActiveFilters() {
+            const activeFilters = $('#activeFilters');
+            activeFilters.empty();
+            
+            const selectedCountry = $('#countryFilter').val();
+            if (selectedCountry) {
+                const badge = $(`<div class="filter-badge">Pays: ${selectedCountry} <span class="close">&times;</span></div>`);
+                badge.find('.close').on('click', function() {
+                    $('#countryFilter').val('');
+                    updateActiveFilters();
+                    filterEtablissements();
+                });
+                activeFilters.append(badge);
+            }
+        }
     </script>
 </body>
 </html>

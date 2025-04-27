@@ -1,109 +1,484 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Administrateur</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #6c63ff;
+            --secondary-color: #4e73df;
+            --accent-color: #5548c8;
+            --text-color: #333;
+            --light-color: #f8f9fc;
+            --dark-color: #5a5c69;
+            --success-color: #1cc88a;
+            --danger-color: #e74a3b;
+            --warning-color: #f6c23e;
+            --info-color: #36b9cc;
+            --gradient-start: #8e2de2;
+            --gradient-end: #4a00e0;
+            --shadow-color: rgba(108, 99, 255, 0.2);
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 0;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-top: 30px;
+        
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
         }
+        
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-brand {
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-brand h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .sidebar-brand i {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .logo-small {
+            width: 35px;
+            height: auto;
+            margin-right: 10px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .sidebar-menu {
+            padding: 0;
+            list-style: none;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            padding: 12px 20px;
+            color: rgba(255, 255, 255, 0.8);
+            display: block;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left-color: white;
+        }
+        
+        .sidebar-menu a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 30px;
+            margin-left: 250px;
+            transition: all 0.3s ease;
+        }
+        
+        .top-navbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .navbar-title h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-actions .btn {
+            margin-left: 10px;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
         .table td, .table th {
             vertical-align: middle;
+            padding: 15px;
         }
+        
+        .table thead th {
+            border-bottom: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: var(--dark-color);
+        }
+        
+        .table-hover tbody tr:hover {
+            background-color: rgba(108, 99, 255, 0.05);
+        }
+        
         .status-badge {
-            padding: 5px 8px;
-            border-radius: 3px;
-            font-size: 12px;
-            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            text-align: center;
         }
+        
         .status-pending {
-            background-color: #ffeeba;
-            color: #856404;
+            background-color: rgba(246, 194, 62, 0.2);
+            color: var(--warning-color);
         }
+        
         .status-validated {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: rgba(28, 200, 138, 0.2);
+            color: var(--success-color);
+        }
+        
+        .btn-action {
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #1cc88a, #16a66f);
+            border: none;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(45deg, #e74a3b, #c43b2e);
+            border: none;
+        }
+        
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            font-weight: 500;
+            animation: slideDown 0.5s ease-in-out;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .empty-state {
+            padding: 50px;
+            text-align: center;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+        
+        .empty-state i {
+            font-size: 4rem;
+            color: #d1d3e2;
+            margin-bottom: 20px;
+        }
+        
+        .empty-state h3 {
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+        
+        .empty-state p {
+            color: #b7b9cc;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--dark-color);
+            cursor: pointer;
+        }
+        
+        @media (max-width: 991px) {
+            .sidebar {
+                left: -250px;
+            }
+            
+            .content {
+                margin-left: 0;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .top-navbar {
+                margin-bottom: 20px;
+            }
+            
+            .navbar-title h1 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .table-responsive {
+                border-radius: 10px;
+            }
+            
+            .top-navbar {
+                padding: 15px;
+            }
+            
+            .navbar-actions .btn span {
+                display: none;
+            }
+            
+            .navbar-actions .btn i {
+                margin: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Dashboard Administrateur</h1>
-            <div>
-                <a href="{{ url_for('index') }}" class="btn btn-secondary">Accueil</a>
-                <a href="{{ url_for('admin_logout') }}" class="btn btn-danger ml-2">Déconnexion</a>
+    <div class="dashboard-wrapper">
+        <div class="sidebar">
+            <div class="sidebar-brand">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="PAIET Logo" class="logo-small">
+                <h2>PAIET Admin</h2>
             </div>
+            
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{{ url_for('admin_dashboard') }}" class="active">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('liste_etablissements') }}">
+                        <i class="fas fa-list"></i> Liste des établissements
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('index') }}">
+                        <i class="fas fa-home"></i> Accueil
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('admin_logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </a>
+                </li>
+            </ul>
         </div>
         
-        {% if etablissements %}
-            <table class="table table-bordered table-hover">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom</th>
-                        <th>Lieu</th>
-                        <th>Pays</th>
-                        <th>Contacts</th>
-                        <th>Lien d'inscription</th>
-                        <th>Statut</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for etablissement in etablissements %}
-                        <tr>
-                            <td>{{ etablissement.id }}</td>
-                            <td>{{ etablissement.nom }}</td>
-                            <td>{{ etablissement.lieu }}</td>
-                            <td>{{ etablissement.pays }}</td>
-                            <td>{{ etablissement.contacts }}</td>
-                            <td>
-                                <a href="{{ etablissement.lien_inscription }}" target="_blank">Voir le lien</a>
-                            </td>
-                            <td>
-                                {% if etablissement.valide %}
-                                    <span class="status-badge status-validated">Validé</span>
-                                {% else %}
-                                    <span class="status-badge status-pending">En attente</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if not etablissement.valide %}
-                                    <a href="{{ url_for('valider_etablissement', id=etablissement.id) }}" class="btn btn-success btn-sm">Valider</a>
-                                {% else %}
-                                    <button class="btn btn-success btn-sm" disabled>Validé</button>
-                                {% endif %}
-                                <a href="{{ url_for('supprimer_etablissement', id=etablissement.id) }}" class="btn btn-danger btn-sm ml-1" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet établissement?')">Supprimer</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <div class="alert alert-info">
-                Aucun établissement n'a été ajouté pour le moment.
+        <div class="content">
+            <button class="mobile-toggle" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="top-navbar">
+                <div class="navbar-title">
+                    <h1>Dashboard Administrateur</h1>
+                </div>
+                <div class="navbar-actions">
+                    <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-home mr-2"></i> <span>Accueil</span>
+                    </a>
+                    <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt mr-2"></i> <span>Déconnexion</span>
+                    </a>
+                </div>
             </div>
-        {% endif %}
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert">
+                                <span>&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            {% if etablissements %}
+                <div class="card">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nom</th>
+                                        <th>Lieu</th>
+                                        <th>Pays</th>
+                                        <th>Contacts</th>
+                                        <th>Lien d'inscription</th>
+                                        <th>Statut</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for etablissement in etablissements %}
+                                        <tr>
+                                            <td>{{ etablissement.id }}</td>
+                                            <td><strong>{{ etablissement.nom }}</strong></td>
+                                            <td>{{ etablissement.lieu }}</td>
+                                            <td>{{ etablissement.pays }}</td>
+                                            <td>{{ etablissement.contacts }}</td>
+                                            <td>
+                                                <a href="{{ etablissement.lien_inscription }}" target="_blank" class="text-primary">
+                                                    <i class="fas fa-external-link-alt mr-1"></i> Voir
+                                                </a>
+                                            </td>
+                                            <td>
+                                                {% if etablissement.valide %}
+                                                    <span class="status-badge status-validated">
+                                                        <i class="fas fa-check-circle mr-1"></i> Validé
+                                                    </span>
+                                                {% else %}
+                                                    <span class="status-badge status-pending">
+                                                        <i class="fas fa-clock mr-1"></i> En attente
+                                                    </span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if not etablissement.valide %}
+                                                    <a href="{{ url_for('valider_etablissement', id=etablissement.id) }}" class="btn btn-success btn-action">
+                                                        <i class="fas fa-check mr-1"></i> Valider
+                                                    </a>
+                                                {% else %}
+                                                    <button class="btn btn-outline-success btn-action" disabled>
+                                                        <i class="fas fa-check mr-1"></i> Validé
+                                                    </button>
+                                                {% endif %}
+                                                <a href="{{ url_for('supprimer_etablissement', id=etablissement.id) }}" class="btn btn-danger btn-action ml-1" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet établissement?')">
+                                                    <i class="fas fa-trash-alt mr-1"></i> Supprimer
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>Aucun établissement disponible</h3>
+                    <p>Il n'y a pas encore d'établissements ajoutés dans le système.</p>
+                </div>
+            {% endif %}
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Toggle sidebar on mobile
+        $(document).ready(function() {
+            $('#sidebarToggle').on('click', function() {
+                $('.sidebar').toggleClass('active');
+            });
+            
+            // Close sidebar when clicking outside on mobile
+            $(document).on('click', function(e) {
+                if ($(window).width() < 992) {
+                    if (!$(e.target).closest('.sidebar').length && !$(e.target).closest('#sidebarToggle').length) {
+                        $('.sidebar').removeClass('active');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html> 

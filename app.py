@@ -5,6 +5,7 @@ from functools import wraps
 
 app = Flask(__name__)
 app.secret_key = 'votre_clef_secrete'
+app.static_folder = 'static'  # Définir le dossier static
 
 # Chemin du fichier JSON
 DB_FILE = 'database.json'
@@ -73,6 +74,16 @@ def liste_etablissements():
     data = load_data()
     etablissements = [e for e in data['etablissements'] if e['valide']]
     return render_template('etablissements.html', etablissements=etablissements)
+
+# Page du bot pour un établissement spécifique
+@app.route('/etablissement/<int:id>/bot')
+def etablissement_bot(id):
+    data = load_data()
+    etablissement = next((e for e in data['etablissements'] if e['id'] == id and e['valide']), None)
+    if not etablissement:
+        flash('Établissement non trouvé ou non validé!', 'danger')
+        return redirect(url_for('liste_etablissements'))
+    return render_template('etablissement_bot.html', etablissement=etablissement)
 
 # Login admin
 @app.route('/admin/login', methods=['GET', 'POST'])
@@ -146,4 +157,4 @@ def supprimer_etablissement(id):
 
 if __name__ == '__main__':
     init_db()
-    app.run(debug=True)
+    app.run(debug=True , host="10.7.100.25" , port=8000)

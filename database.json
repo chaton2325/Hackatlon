@@ -2,10 +2,20 @@
     "etablissements": [
         {
             "id": 1,
-            "nom": "universit\u00e9 centrale polytechnique",
+            "nom": "universit\u00e9 centrale",
             "lien_inscription": "http://universitecentrale.tn",
             "contacts": "123124",
             "lieu": "tunis",
+            "pays": "Tunisia",
+            "valide": true,
+            "lien_bot": "https://cdn.botpress.cloud/webchat/v2.4/shareable.html?configUrl=https://files.bpcontent.cloud/2025/04/27/00/20250427002450-UCEWOATD.json"
+        },
+        {
+            "id": 2,
+            "nom": "Esprit - Honoris united university",
+            "lien_inscription": "https://esprit.tn/",
+            "contacts": "123",
+            "lieu": "Tunis",
             "pays": "Tunisia",
             "valide": true,
             "lien_bot": "http://chat.openai.com"
